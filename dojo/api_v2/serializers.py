@@ -495,10 +495,10 @@ class FindingCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         pass
 
     def validate(self, data):
-        if ((data['active'] or data['verified']) and data['duplicate']):
+        if (data.get('active', True) or data.get('verified', True)) and data.get('duplicate', False):
             raise serializers.ValidationError('Duplicate findings cannot be'
                                               ' verified or active')
-        if data['false_p'] and data['verified']:
+        if data.get('false_p', False) and data.get('verified', True):
             raise serializers.ValidationError('False positive findings cannot '
                                               'be verified.')
         return data
